@@ -105,6 +105,24 @@ class MainActivity : AppCompatActivity() {
         bindService(intent, mConnection, Context.BIND_AUTO_CREATE)
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        try {
+            authService?.unregisterCallBack(authCallBack)
+        } catch (e: RemoteException) {
+        }
+
+        unbindService(mConnection)
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        val topFrag = supportFragmentManager.findFragmentById(R.id.container)
+        if (topFrag == null)
+            finish()
+
+    }
+
     var authService: IAuthService? = null
 
     val mConnection = object : ServiceConnection {
@@ -127,17 +145,6 @@ class MainActivity : AppCompatActivity() {
         override fun onServiceDisconnected(className: ComponentName) {
             authService = null
         }
-    }
-
-
-    override fun onDestroy() {
-        super.onDestroy()
-        try {
-            authService?.unregisterCallBack(authCallBack)
-        } catch (e: RemoteException) {
-        }
-
-        unbindService(mConnection)
     }
 
     fun signUp(name: String?, password: String?, confirmPassword: String?, email: String?) {

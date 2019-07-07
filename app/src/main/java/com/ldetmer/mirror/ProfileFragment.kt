@@ -18,7 +18,6 @@ class ProfileFragment : Fragment() {
         val v = inflater!!.inflate(R.layout.fragment_profile, container, false)
         editMode = arguments?.getBoolean(EDIT_PROFILE_KEY, false) ?: false
         userInfo = arguments?.getParcelable(PROFILE_INFO_KEY) as UserInfo?
-        Log.i("Prof", "Edit mode " + editMode + arguments + arguments?.getBoolean(EDIT_PROFILE_KEY, false))
         return v
     }
 
@@ -39,6 +38,7 @@ class ProfileFragment : Fragment() {
                 editBirthday.text?.toString()
             )
         }
+        cancel.setOnClickListener { viewProfile() }
     }
 
     fun editProfile() {
